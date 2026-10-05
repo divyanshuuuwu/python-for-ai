@@ -1,7 +1,6 @@
 
-is_logged_in = True
+def greet():
+    print("hi niga")
+    pass
 
-if is_logged_in:
-    print("logged in")
-else:    
-    print("not logged in")
+greet()
