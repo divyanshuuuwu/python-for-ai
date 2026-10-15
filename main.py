@@ -1,6 +1,10 @@
 #models in langchain
 
 
+
+
+
+
 from langchain_openai import ChatOpenAI
 
 # 1. Create the model
