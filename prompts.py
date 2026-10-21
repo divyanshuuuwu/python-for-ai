@@ -1,20 +1,11 @@
-import langchain_core.prompts as prompts
+from langchain_core.prompts import ChatPromptTemplate
 
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are an AI tutor who explains concepts simply."),
+    ("human", "Explain {topic} with an example.")
+])
 
-def get_prompt(prompt_type, input_variables):
-    if prompt_type == "prompt":
-        return prompts.PromptTemplate(
-            input_variables=input_variables,
-            template="What is a good name for a company that makes {product}?",
-        )
-    elif prompt_type == "chat":
-        return prompts.ChatPromptTemplate.from_messages(
-            [
-                prompts.SystemMessagePromptTemplate.from_template(
-                    "You are a helpful assistant that translates English to French."
-                ),
-                prompts.HumanMessagePromptTemplate.from_template("{input}"),
-            ]
-        )
-    else:
-        raise ValueError(f"Invalid prompt type: {prompt_type}")  # Add more prompt types as needed
+messages = prompt.format_messages(topic="Embeddings")
+
+for message in messages:
+    print(message)
