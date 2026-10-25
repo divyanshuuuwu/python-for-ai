@@ -1,29 +1,22 @@
-from pydantic import BaseModel, Field
-from langchain_core.output_parsers import PydanticOutputParser
+from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 
-class Person(BaseModel):
-    name: str = Field(description="Person's name")
-    age: int = Field(description="Person's age")
-
-parser = PydanticOutputParser(pydantic_object=Person)
+llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0)
 
 prompt = ChatPromptTemplate.from_template(
-    "Extract the person's information from the text.\n"
-    "{format_instructions}\n"
-    "Text: {text}"
-).partial(
-    format_instructions=parser.get_format_instructions()
+    "Return three programming languages as JSON "
+    "with a key named languages.\n"
+    "Question: {question}"
 )
 
-llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0)
+parser = JsonOutputParser()
 
 chain = prompt | llm | parser
 
 result = chain.invoke({
-    "text": "Rahul is 22 years old."
+    "question": "Name three popular programming languages."
 })
 
-print(result.name)
-print(result.age)
+print(result)
+print(result["languages"])
